@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html>
+
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="description"
+          content="Inserting anybody's identity into anywhere for customized image/video/3d generation.">
+    <meta name="keywords" content="StableIdentity, customization, identity">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>UniEdit</title>
+  
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+  
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+  
+      gtag('js', new Date());
+  
+      gtag('config', 'G-PYVRSFMDRL');
+    </script>
+  
+    <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+          rel="stylesheet">
+  
+    <link rel="stylesheet" href="./static/css/bulma.min.css">
+    <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+    <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+    <link rel="stylesheet" href="./static/css/index.css">
+    <link rel="icon" href="./static/images/dut.svg">
+  
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script defer src="./static/js/fontawesome.all.min.js"></script>
+    <script src="./static/js/bulma-carousel.min.js"></script>
+    <script src="./static/js/bulma-slider.min.js"></script>
+    <script src="./static/js/index.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  </head>
+
+<body>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+          <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+        </div>
+    </nav>
+    <section class="hero">
+        <div class="hero-body">
+            <div class="container is-max-desktop">
+            <div class="columns is-centered">
+                <div class="column has-text-centered">
+                <h1 class="title is-1 publication-title">
+                    UniEdit: A Unified Tuning-Free Framework for Video Motion and Appearance Editing
+                  </h1>
+                <div class="is-size-5 publication-authors">
+                    <span class="author-block">
+                    <a href="https://jianhongbai.github.io/" target="_blank">Jianhong Bai</a><sup>1*</sup>,</span>
+                    <span class="author-block">
+                    <a href="https://www.microsoft.com/en-us/research/people/tianyuhe/" target="_blank">Tianyu He</a><sup>2&#8224;</sup></span>
+                    <span class="author-block">
+                    <a href="https://scholar.google.com/citations?hl=en&user=RxuU_0YAAAAJ" target="_blank">Yuchi Wang</a><sup>3</sup>,
+                    </span>
+                    <span class="author-block">
+                    <a href="https://leoguojl.me/" target="_blank">Junliang Guo</a><sup>2</sup>,
+                    </span>
+                    <span class="author-block">
+                    <a href="https://person.zju.edu.cn/en/huhaoji" target="_blank">Haoji Hu</a><sup>1</sup>,
+                    </span>
+                    <span class="author-block">
+                        <a href="https://person.zju.edu.cn/en/lzz" target="_blank">Zuozhu Liu</a><sup>1</sup>,
+                    </span>
+                    <span class="author-block">
+                        <a href="https://sites.google.com/view/jiangbian" target="_blank">Jiang Bian</a><sup>2</sup>
+                    </span>
+                </div>
+
+                <div class="is-size-5 publication-authors">
+                    <span class="author-block"><sup>1</sup>Zhejiang University,</span>
+                    <span class="author-block"><sup>2</sup>Microsoft Research Asia,</span>
+                    <span class="author-block"><sup>3</sup>Peking University.</span>
+                    <br><sup>*</sup>Work done during an internship at Microsoft Research Asia.<br><sup>&#8224;</sup>Corresponding Author.
+                </div>
+
+                <div class="column has-text-centered">
+                    <div class="publication-links">
+                    <!-- Arxiv Link. -->
+                    <span class="link-block">
+                        <a href="https://arxiv.org/" class="external-link button is-normal is-rounded is-dark"
+                        target="_blank">
+                        <span class="icon">
+                            <i class="ai ai-arxiv"></i>
+                        </span>
+                        <span>arXiv</span>
+                        </a>
+                    </span>
+                    <!-- Code Link. -->
+                    <span class="link-block">
+                        <a href="https://github.com/" class="external-link button is-normal is-rounded is-dark">
+                        <span class="icon">
+                            <i class="fab fa-github"></i>
+                        </span>
+                        <span>Code (coming soon)</span>
+                        </a>
+                    </span>
+                    
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="hero teaser">
+        <div class="container is-max-desktop">
+            <div class="hero-body">
+              <img src="./static/images/fig1.svg" alt="Examples edited by UniEdit." style="transform: translateX(-13.5px);"/>
+              <h2 class="content has-text-centered">
+                UniEdit supports both video <strong><span style="color: #F0A780;">motion</span></strong> editing in the time axis (i.e., from playing guitar to eating or waving) and various video <strong><span style="color: #156082;">appearance</span></strong> editing scenarios (i.e., stylization, rigid/non-rigid object replacement, background modification).
+              </h2>
+            </div>
+          </div>
+      </section>
+
+<section class="hero teaser">
+    <div id="results-carousel" class="carousel results-carousel" style="width: 895px; margin: 0 auto;">
+        <div class="item has-text-centered">
+          <img src="./static/images/fig1_vangogh.svg", width="100%">
+          <video poster="" id="burger1" autoplay controls muted loop playsinline style="width: 100%; height: 100%;">
+            <source src="./video/fig1_videos/van gogh style.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="item has-text-centered">
+          <img src="./static/images/fig1_panda.svg", width="100%">
+          <video poster="" id="burger2" autoplay controls muted loop playsinline style="width: 100%; height: 100%;">
+            <source src="./video/fig1_videos/panda guitar.mp4"
+                    type="video/mp4">
+          </video>
+        </div>                
+        <div class="item has-text-centered">
+          <img src="./static/images/fig1_metal.svg", width="100%">
+          <video poster="" id="woman" autoplay controls muted loop playsinline style="width: 100%; height: 100%;">
+            <source src="./video/fig1_videos/metal raccoon guitar.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item has-text-centered">
+          <img src="./static/images/fig1_spiderman.svg", width="100%">
+          <video poster="" id="golden_crown" autoplay controls muted loop playsinline style="width: 100%; height: 100%;">
+            <source src="./video/fig1_videos/spider man guitar.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item has-text-centered">
+          <img src="./static/images/fig1_ironman.svg", width="100%">
+          <video poster="" id="makeup1" autoplay controls muted loop playsinline style="width: 100%; height: 100%;">
+            <source src="./video/fig1_videos/iron man guitar.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item has-text-centered">
+          <img src="./static/images/fig1_space.svg", width="100%">
+          <video poster="" id="makeup2" autoplay controls muted loop playsinline style="width: 100%; height: 100%;">
+            <source src="./video/fig1_videos/background space.mp4"
+                    type="video/mp4">
+          </video>
+        </div>        
+        <div class="item has-text-centered">
+          <img src="./static/images/fig1_eating_apple.svg", width="100%">
+          <video poster="" id="oil_painting" autoplay controls muted loop playsinline style="width: 100%; height: 100%;">
+            <source src="./video/fig1_videos/raccoon eat apple.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item has-text-centered">
+          <img src="./static/images/fig1_waving.svg", width="100%">
+          <video poster="" id="hat_comic" autoplay controls muted loop playsinline style="width: 100%; height: 100%;">
+            <source src="./video/fig1_videos/raccoon waving.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+    </div>
+    <br>
+</section>
+
+
+<section class="section">
+    <div class="container is-max-desktop">
+        <!-- Abstract. -->
+        <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+            <h2 class="title is-3">Abstract</h2>
+            <div class="content has-text-justified">
+            <p>
+                Recent advances in text-guided video editing have showcased promising results in appearance editing (e.g., stylization). However, video motion editing in the temporal dimension (e.g., from eating to waving), which distinguishes video editing from image editing, is underexplored. In this work, we present UniEdit, a tuning-free framework that supports both video motion and appearance editing by harnessing the power of a pre-trained text-to-video generator within an inversion-then-generation framework.
+                To realize motion editing while preserving source video content, based on the insights that temporal and spatial self-attention layers encode inter-frame and intra-frame dependency respectively, we introduce auxiliary motion-reference and reconstruction branches to produce text-guided motion and source features respectively. The obtained features are then injected into the main editing path via temporal and spatial self-attention layers.
+                Extensive experiments demonstrate that UniEdit covers video motion editing and various appearance editing scenarios, and surpasses the state-of-the-art methods.
+            </p>
+            <br>
+            </div>
+        </div>
+        </div>
+        <!--/ Abstract. -->
+    
+        <!-- Method. -->
+        <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+            <h2 class="title is-3">Method</h2>
+            <figure>
+            <img src="./static/images/fig_pipe.svg" width=100%/>
+            </figure>
+            <div class="content has-text-justified">
+            <p>
+                Overview of UniEdit. It follows an inversion-then-generation pipeline and consists of a <strong><span style="color: #F2AA84;">main editing path</span></strong>, an auxiliary <strong><span style="color: #A5C496;">reconstruction branch</span></strong> and an auxiliary <strong><span style="color: #8891DB;">motion-reference branch</span></strong>. The reconstruction branch produces source features for content preservation, and the motion-reference branch yields text-guided motion features for motion injection. The source features and motion features are injected into the main editing path through spatial self-attention (SA-S) and temporal self-attention (SA-T) modules respectively. We further introduce spatial structure control to retain the coarse structure of the source video.
+            </p>
+            <br>
+            </div>
+        </div>
+        </div>
+        <!--/ Method. -->
+    
+    </section>
+    
+    <section class="hero teaser">
+        <div class="container is-max-desktop">
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-full-width">
+                    <h2 class="title is-3">Motion Editing</h2>
+
+                    <table style="table-layout: fixed;">
+                    <tbody>
+                        <tr>
+                            <!-- First row of videos -->
+                            <td width="50%" style="text-align:center;"> 
+                                <video width="98%" autoplay muted loop>
+                                    <source src="video/motion/raccoon eat apple.mp4" type="video/mp4"> 
+                                </video> 
+                                <img src="./static/images/m1.svg", style="width: 100%; margin-top: -0px;">
+                                <br>
+                            </td>
+                            <td width="50%" style="text-align:center;"> 
+                                <video width="98%" autoplay muted loop> 
+                                    <source src="video/motion/raccoon waving.mp4" type="video/mp4"> 
+                                </video> 
+                                <img src="./static/images/m2.svg", style="width: 100%; margin-top: -0px;">
+                                <br>
+                            </td>
+                        <tr>
+                        <tr>
+                            <!-- First row of videos -->
+                            <td width="50%" style="text-align:center;"> 
+                                <video width="98%" autoplay muted loop> 
+                                    <source src="video/motion/corgi_lying.mp4" type="video/mp4"> 
+                                </video> 
+                                <img src="./static/images/m3.svg", style="width: 100%; margin-top: -0px;">
+                                <br>
+                            </td>
+                            <td width="50%" style="text-align:center;"> 
+                                <video width="98%" autoplay muted loop> 
+                                    <source src="video/motion/corgi jumping.mp4" type="video/mp4"> 
+                                </video> 
+                                <img src="./static/images/m4.svg", style="width: 100%; margin-top: -0px;">
+                                <br>
+                            </td>
+                        <tr>
+                        <tr>
+                            <!-- First row of videos -->
+                            <td width="50%" style="text-align:center;"> 
+                                <video width="98%" autoplay muted loop> 
+                                    <source src="video/motion/man running.mp4" type="video/mp4"> 
+                                </video> 
+                                <img src="./static/images/m5.svg", style="width: 100%; margin-top: -0px;">
+                                <br>
+                            </td>
+                            <td width="50%" style="text-align:center;"> 
+                                <video width="98%" autoplay muted loop> 
+                                    <source src="video/motion/monkey turn around.mp4" type="video/mp4"> 
+                                </video> 
+                                <img src="./static/images/m6.svg", style="width: 100%; margin-top: -0px;">
+                                <br>
+                            </td>
+                        <tr>
+                        <tr>
+                            <!-- First row of videos -->
+                            <td width="50%" style="text-align:center;"> 
+                                <video width="98%" autoplay muted loop> 
+                                    <source src="video/motion/teddy dancing.mp4" type="video/mp4"> 
+                                </video> 
+                                <img src="./static/images/m7.svg", style="width: 100%; margin-top: -0px;">
+                                <br>
+                            </td>
+                            <td width="50%" style="text-align:center;"> 
+                                <video width="98%" autoplay muted loop> 
+                                    <source src="video/motion/cat jumping.mp4" type="video/mp4"> 
+                                </video> 
+                                <img src="./static/images/m8.svg", style="width: 100%; margin-top: -0px;">
+                                <br>
+                            </td>
+                        <tr>
+                    </tbody>
+                    </table>
+                <br>
+                <hr style="margin-top:0px">
+            </div>
+        </div>
+        </div>
+    <br>
+    </section>
+
+    <section>
+        <div class="container is-max-desktop">
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-full-width">
+                    <h2 class="title is-3">Appearance Editing</h2>
+                <p></p>
+                <table style="table-layout: fixed;">
+                <tbody>
+                    <tr>
+                        <!-- First row of videos -->
+                        <td width="50%" style="text-align:center;">
+                            <video width="98%" autoplay muted loop>
+                                <source src="video/appear/phantom red suit.mp4" type="video/mp4">
+                            </video>
+                            <img src="./static/images/a1.svg", style="width: 100%; margin-top: -0px;">
+                            <br>
+                        </td>
+                        <td width="50%" style="text-align:center;">
+                            <video width="98%" autoplay muted loop>
+                                <source src="video/appear/phantom superman suit.mp4" type="video/mp4">
+                            </video>
+                            <img src="./static/images/a2.svg", style="width: 100%; margin-top: -0px;">
+                            <br>
+                        </td>
+                    <tr>
+                    <tr>
+                        <!-- First row of videos -->
+                        <td width="50%" style="text-align:center;">
+                            <video width="98%" autoplay muted loop>
+                                <source src="video/appear/wolf dinner.mp4" type="video/mp4">
+                            </video>
+                            <img src="./static/images/a3.svg", style="width: 100%; margin-top: -0px;">
+                            <br>
+                        </td>
+                        <td width="50%" style="text-align:center;">
+                            <video width="98%" autoplay muted loop>
+                                <source src="video/appear/mario dinner.mp4" type="video/mp4">
+                            </video>
+                            <img src="./static/images/a4.svg", style="width: 100%; margin-top: -0px;">
+                            <br>
+                        </td>
+                    <tr>
+                    <tr>
+                        <!-- First row of videos -->
+                        <td width="50%" style="text-align:center;"> 
+                            <video width="98%" autoplay muted loop> 
+                                <source src="video/appear/crayon_shark.mp4" type="video/mp4"> 
+                            </video> 
+                            <img src="./static/images/a5.svg", style="width: 100%; margin-top: -0px;">
+                            <br>
+                        </td>
+                        <td width="50%" style="text-align:center;"> 
+                            <video width="98%" autoplay muted loop> 
+                                <source src="video/appear/furturistic factory.mp4" type="video/mp4"> 
+                            </video> 
+                            <img src="./static/images/a6.svg", style="width: 100%; margin-top: -0px;">
+                            <br>
+                        </td>
+                    <tr>
+                    <tr>
+                        <!-- First row of videos -->
+                        <td width="50%" style="text-align:center;"> 
+                            <video width="98%" autoplay muted loop> 
+                                <source src="video/appear/NYC night.mp4" type="video/mp4"> 
+                            </video> 
+                            <img src="./static/images/a7.svg", style="width: 100%; margin-top: -0px;">
+                            <br>
+                        </td>
+                        <td width="50%" style="text-align:center;"> 
+                            <video width="98%" autoplay muted loop> 
+                                <source src="video/appear/shanghai oil painting.mp4" type="video/mp4"> 
+                            </video> 
+                            <img src="./static/images/a8.svg", style="width: 100%; margin-top: -0px;">
+                            <br>
+                        </td>
+                    <tr>
+                    <tr>
+                        <!-- First row of videos -->
+                        <td width="50%" style="text-align:center;"> 
+                            <video width="98%" autoplay muted loop> 
+                                <source src="video/appear/iron man winter.mp4" type="video/mp4"> 
+                            </video> 
+                            <img src="./static/images/a9.svg", style="width: 100%; margin-top: -0px;">
+                            <br>
+                        </td>
+                        <td width="50%" style="text-align:center;"> 
+                            <video width="98%" autoplay muted loop> 
+                                <source src="video/appear/lego boy.mp4" type="video/mp4"> 
+                            </video> 
+                            <img src="./static/images/a10.svg", style="width: 100%; margin-top: -0px;">
+                            <br>
+                        </td>
+                    <tr>
+                    <tr>
+                        <!-- First row of videos -->
+                        <td width="50%" style="text-align:center;"> 
+                            <video width="98%" autoplay muted loop> 
+                                <source src="video/appear/metal raccoon guitar.mp4" type="video/mp4"> 
+                            </video> 
+                            <img src="./static/images/a11.svg", style="width: 100%; margin-top: -0px;">
+                            <br>
+                        </td>
+                        <td width="50%" style="text-align:center;"> 
+                            <video width="98%" autoplay muted loop> 
+                                <source src="video/appear/iron man guitar.mp4" type="video/mp4"> 
+                            </video> 
+                            <img src="./static/images/a12.svg", style="width: 100%; margin-top: -0px;">
+                            <br>
+                        </td>
+                    <tr>
+                    <tr>
+                        <!-- First row of videos -->
+                        <td width="50%" style="text-align:center;"> 
+                            <video width="98%" autoplay muted loop> 
+                                <source src="video/appear/panda guitar.mp4" type="video/mp4"> 
+                            </video> 
+                            <img src="./static/images/a13.svg", style="width: 100%; margin-top: -0px;">
+                            <br>
+                        </td>
+                        <td width="50%" style="text-align:center;"> 
+                            <video width="98%" autoplay muted loop> 
+                                <source src="video/appear/spider man guitar.mp4" type="video/mp4"> 
+                            </video> 
+                            <img src="./static/images/a14.svg", style="width: 100%; margin-top: -0px;">
+                            <br>
+                        </td>
+                    <tr>
+                </tbody>
+                </table>
+                <br>
+                <hr style="margin-top:0px">
+            </div>
+        </div>
+        </div>
+    <br>
+    </section>
+    <section>
+        <div class="container is-max-desktop">
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-full-width">
+                    <h2 class="title is-3">Comparison with State-of-the-Art Methods</h2>
+                <video width="100%" controls style="display: block; margin: 0 auto;">
+                    <source src="video/compare with baselines.mp4" type="video/mp4">
+                </video>
+                
+
+            </div>
+            
+        </div>
+        <p>MasaCtrl* indicates we adapt MasaCtrl to the text-to-video model.</p>
+        <br>
+        <hr style="margin-top:0px">
+        </div>
+    <br>
+    </section>
+
+    <section class="section">
+        <div class="container is-max-desktop">
+            <h1 class="title is-4">
+                Responsible AI Considerations
+            </h1>
+            <div class="content has-text-justified-desktop">
+                <p>
+                    UniEdit is a tuning-free approach and is intended for advancing AI/ML research on video editing. We encourage users to use the model responsibly. We discourage users from using the codes to generate intentionally deceptive or untrue content or for inauthentic activities. It is suggested to add watermarks to prevent misuse.
+                </p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section" id="BibTeX">
+        <div class="container is-max-desktop content">
+          <h2 class="title is-4">BibTeX</h2>
+          <pre><code>@article{}</code></pre>
+        </div>
+    </section>
+
+
+</body>
+
+</html>
