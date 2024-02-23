@@ -1,3 +1,4 @@
+
 # UniEdit: A Unified Tuning-Free Framework for Video Motion and Appearance Editing
 ## [<a href="https://jianhongbai.github.io/UniEdit/" target="_blank">Project Page</a>] [<a href="https://arxiv.org/abs/2402.13185" target="_blank">arXiv</a>]
 
@@ -13,6 +14,9 @@
 - **Versatile**: supports both video motion editing and various video appearance editing scenarios.
 - **Tuning-free**: no training or optimization required.
 - **Flexibility**: compatible with off-the-shelf T2V models.
+
+https://github.com/JianhongBai/UniEdit/assets/74419686/1d740f83-705d-4f59-89a6-21a61d1ebf14
+
 
 Please visit the [project webpage](https://jianhongbai.github.io/UniEdit/) to see more results and information.
 
