@@ -15,8 +15,7 @@
 - **Tuning-free**: no training or optimization required.
 - **Flexibility**: compatible with off-the-shelf T2V models.
 
-https://github.com/JianhongBai/UniEdit/assets/74419686/1d740f83-705d-4f59-89a6-21a61d1ebf14
-
+https://github.com/JianhongBai/UniEdit/assets/74419686/0f1bf5a8-600b-4834-a734-74ea8104971f
 
 Please visit the [project webpage](https://jianhongbai.github.io/UniEdit/) to see more results and information.
 
