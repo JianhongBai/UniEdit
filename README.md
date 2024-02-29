@@ -54,5 +54,5 @@ Please visit the [project webpage](https://jianhongbai.github.io/UniEdit/) to se
 
 ## Updates
 
-- [ ] :computer: Code (coming soon).
+- [ ] :computer: Code (The code will be released when the paper is accepted).
 - [x] :page_facing_up: Paper released on [arXiv](https://arxiv.org/abs/2402.13185).
