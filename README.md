@@ -52,7 +52,50 @@
 
 Please visit the [project webpage](https://jianhongbai.github.io/UniEdit/) to see more results and information.
 
-## Updates
+## Usage
 
-- [ ] :computer: Code (The code will be released when the paper is accepted).
-- [x] :page_facing_up: Paper released on [arXiv](https://arxiv.org/abs/2402.13185).
+### Requirements
+The code runs on Python 3.11.3 with Pytorch 2.0.1.
+
+```base
+git clone https://github.com/JianhongBai/UniEdit.git
+cd UniEdit
+pip install -r requirements.txt
+```
+
+### Checkpoints
+
+**LaVie:**
+Our work primarily builds on the text-to-video generation framework [LaVie](https://github.com/Vchitect/LaVie), so we need to first download pretrained models according to its guidance [here](https://github.com/Vchitect/LaVie#download-pre-trained-models).
+
+### Generating Segmentation Masks
+
+We utilize foreground/background segmentation masks to further enhance the performance of UniEdit, we can use [SAM](https://github.com/facebookresearch/segment-anything) to generate the corresponding segmentation masks.
+
+### Editing
+
+Last, you can perform video appearance or motion editing with following commands:
+
+```bash
+python uniedit_a.py
+```
+
+```bash
+python uniedit_m.py
+```
+
+## Acknowledgements
+
+We express our gratitude for the awesome research works [LaVie](https://github.com/Vchitect/LaVie), [MasaCtrl](https://github.com/TencentARC/MasaCtrl/)! Thanks for the valuable work!
+
+
+## Citation
+
+```bibtex
+@article{bai2024uniedit,
+            title={UniEdit: A Unified Tuning-Free Framework for Video Motion and Appearance Editing},
+            author={Bai, Jianhong and He, Tianyu and Wang, Yuchi and Guo, Junliang and Hu, Haoji and Liu, Zuozhu and Bian, Jiang},
+            journal={arXiv preprint arXiv:2402.13185},
+            year={2024}
+          }
+```
