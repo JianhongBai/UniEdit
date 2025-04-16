@@ -72,19 +72,26 @@ config.source_prompt = ''
 config.target_prompt = 'A dog in the field.'
 config.inverse_prompt = ''
 config.n_prompt = ''
-config.sd_model_path = "CompVis/stable-diffusion-v1-4"
-config.lavie_model_path = "./path/to/LaVie/lavie_base.pt"
+config.sd_model_path = "stable-diffusion-v1-4"
+config.lavie_model_path = "./LaVie/lavie_base.pt"
 config.seed = 42
 
 ### >>> create pipeline >>> ###
 tokenizer    = CLIPTokenizer.from_pretrained(config.sd_model_path, subfolder="tokenizer")
 text_encoder = CLIPTextModel.from_pretrained(config.sd_model_path, subfolder="text_encoder")
 vae          = AutoencoderKL.from_pretrained(config.sd_model_path, subfolder="vae")
-scheduler = DDIMScheduler.from_pretrained(config.sd_model_path,
-                                        subfolder="scheduler",
-                                        beta_start=0.0001, 
-                                        beta_end=0.02, 
-                                        beta_schedule="linear")            
+if config.nti:
+    scheduler = DDIMScheduler.from_pretrained(config.sd_model_path,
+                                            subfolder="scheduler",
+                                            beta_start=0.0001, 
+                                            beta_end=0.02, 
+                                            beta_schedule="linear") 
+else:
+    scheduler = DDIMScheduler.from_pretrained(config.sd_model_path,
+                                            subfolder="scheduler",
+                                            beta_start=0.00085, 
+                                            beta_end=0.012,
+                                            beta_schedule="linear")            
 unet = UNet3DConditionModel.from_pretrained_2d(config.sd_model_path, subfolder="unet")
 
 checkpoint = torch.load(config.lavie_model_path, map_location=lambda storage, loc: storage)
@@ -106,7 +113,7 @@ if not os.path.exists(input_dir):
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 
-image_resolution = [320, 512]
+image_resolution = [512, 320]
 crop = [0, 0, 0, 0]
 prepare_frames(input_path, input_dir, image_resolution, crop)
 
@@ -116,6 +123,7 @@ for frame in sorted(os.listdir(input_dir)):
     source_image = load_image(image_path, device)
     frames.append(source_image)
 frames = torch.cat(frames, dim=0)[::config.frame_stride][0:0+config.frame_num].unsqueeze(0)  # b f c h w
+print(f"frames shape: {frames.shape}")
 frames_for_save = rearrange(frames, "b f c h w -> b c f h w")
 save_videos_grid(frames_for_save.cpu(), os.path.join(output_dir, "input.gif"), save_input=True)
 
@@ -131,6 +139,26 @@ if is_xformers_available():
 seed_everything(config.seed)
 start_latent = torch.load("randn_start_latent_seed42.pt")
 
+latent_path = os.path.join(output_dir, "nti_start_latent.pt")
+embeddings_path = os.path.join(output_dir, "nti_uncond_embeddings.pt")
+if config.nti:
+    if not os.path.exists(latent_path) or not os.path.exists(embeddings_path):
+        null_inversion = NullInversion(model, frames, config.num_ddim_steps, config.guidance_scale, device, weight_dtype=torch.float32)
+        (image_gt, image_enc), x_t, uncond_embeddings = null_inversion.invert(None, prompt=config.inverse_prompt, offsets=(0,0,0,0), verbose=True)
+        torch.save(x_t, latent_path)
+        torch.save(uncond_embeddings, embeddings_path)
+    else:
+        x_t = torch.load(latent_path)
+        uncond_embeddings = torch.load(embeddings_path)
+else:
+    x_t, _ = model.invert_video(frames,
+                                [config.inverse_prompt],
+                                num_inference_steps=50,
+                                guidance_scale=7.5,
+                                eta=0.0,
+                                return_intermediates=False)
+    uncond_embeddings=None
+
 if config.uniedit_with_mask:
     mask = load_mask()
     editor = SpatialAttentionWithMask(mask_s=mask)
@@ -144,22 +172,9 @@ else:
     regiter_attention_editor_diffusers(model, editor)
     editor.struc_ctrl_step_idx = list(range(20))
     editor.struc_ctrl_layer_idx = list(range(16))
-
 assert editor.num_att_layers==32
 editor.motion_editing = False
 model.start_with_same_latent = True
-
-latent_path = os.path.join(output_dir, "nti_start_latent.pt")
-embeddings_path = os.path.join(output_dir, "nti_uncond_embeddings.pt")
-if config.nti:
-    if not os.path.exists(latent_path) or not os.path.exists(embeddings_path):
-        null_inversion = NullInversion(model, frames, config.num_ddim_steps, config.guidance_scale, device, weight_dtype=torch.float32)
-        (image_gt, image_enc), x_t, uncond_embeddings = null_inversion.invert(None, prompt=config.inverse_prompt, offsets=(0,0,0,0), verbose=True)
-        torch.save(x_t, latent_path)
-        torch.save(uncond_embeddings, embeddings_path)
-    else:
-        x_t = torch.load(latent_path)
-        uncond_embeddings = torch.load(embeddings_path)
 
 prompts = [config.source_prompt, config.target_prompt]
 results = model(
@@ -167,8 +182,8 @@ results = model(
             negative_prompt     = config.n_prompt,
             num_inference_steps = config.num_ddim_steps,
             guidance_scale      = config.guidance_scale,
-            height              = image_resolution[0],
-            width               = image_resolution[1],
+            height              = image_resolution[1],
+            width               = image_resolution[0],
             video_length        = config.frame_num,
             latents             = x_t.repeat(2, 1, 1, 1, 1),
             uncond_embeddings_pre=uncond_embeddings,

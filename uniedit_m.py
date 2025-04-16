@@ -42,8 +42,8 @@ config.frame_stride = 1
 config.source_prompt = 'A cute raccoon playing guitar in the park at sunrise, oil painting style.'
 config.target_prompt = 'A cute raccoon eating an apple in the park at sunrise, oil painting style.'
 config.n_prompt = ''
-config.sd_model_path = "CompVis/stable-diffusion-v1-4"
-config.lavie_model_path = "./path/to/LaVie/lavie_base.pt"
+config.sd_model_path = "stable-diffusion-v1-4"
+config.lavie_model_path = "./LaVie/lavie_base.pt"
 config.seed = 42
 
 ### >>> create validation pipeline >>> ###
@@ -81,7 +81,7 @@ if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 
 seed_everything(config.seed)
-image_resolution = [320, 512]
+image_resolution = [512, 320]
 start_latent = torch.load("randn_start_latent_seed42.pt")
 
 def load_mask():
@@ -123,8 +123,8 @@ results = model(
                 negative_prompt     = config.n_prompt,
                 num_inference_steps = config.num_ddim_steps,
                 guidance_scale      = config.guidance_scale,
-                height              = image_resolution[0],
-                width               = image_resolution[1],
+                height              = image_resolution[1],
+                width               = image_resolution[0],
                 video_length        = config.frame_num,
                 latents             = start_latent.repeat(3, 1, 1, 1, 1),
                 ).videos

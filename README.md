@@ -57,7 +57,7 @@ Please visit the [project webpage](https://jianhongbai.github.io/UniEdit/) to se
 ### Requirements
 The code runs on Python 3.11.3 with Pytorch 2.0.1.
 
-```base
+```bash
 git clone https://github.com/JianhongBai/UniEdit.git
 cd UniEdit
 pip install -r requirements.txt
@@ -66,7 +66,14 @@ pip install -r requirements.txt
 ### Checkpoints
 
 **LaVie:**
-Our work primarily builds on the text-to-video generation framework [LaVie](https://github.com/Vchitect/LaVie), so we need to first download pretrained models according to its guidance [here](https://github.com/Vchitect/LaVie#download-pre-trained-models).
+Our work primarily builds on the text-to-video generation framework [LaVie](https://github.com/Vchitect/LaVie), so we need to first download pretrained models:
+
+```bash
+git lfs install
+cd UniEdit
+git clone https://huggingface.co/CompVis/stable-diffusion-v1-4
+git clone https://huggingface.co/Vchitect/LaVie
+```
 
 ### Generating Segmentation Masks
 
